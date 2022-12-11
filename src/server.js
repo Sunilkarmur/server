@@ -16,10 +16,29 @@ app.use(express.urlencoded({extended: true}));
 
 import userRouter from './routes/user.route.js';
 
+const whitelist = ['https://www.thegirheritageresort.com', 'https://www.thegirheritageresort.com','http://localhost:3000']
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error())
+    }
+  },
+methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+}
+
+
 // enabling cors for all requests by using cors middleware
-app.use(cors());
+/*var corsOptions = {
+  origin: ['https://www.thegirheritageresort.com','https://thegirheritageresort.com',''],
+methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+// optionsSuccessStatus: 200 
+}*/
+// console.log(corsOptions)
+app.use(cors(corsOptions));
 // Enable pre-flight
-app.options("*", cors());
+// app.options("https://www.thegirheritageresort.com", cors());
 
 const PORT = process.env.PORT || process.env.APP_PORT;
 
